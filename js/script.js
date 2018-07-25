@@ -1,6 +1,6 @@
-let matrix = [];
-let maxchars = 100;
-chars = " .ウカ0ヲ⋺⋵≐⋄ミマィ⋔";
+let matrix = '';
+let filler = ' ';
+chars = ".0OoHVXZI:UE.+.";
 const gd = new GitDown('#wrapper', {
     title: 'Code Rains',
     content: 'README.md',
@@ -36,59 +36,84 @@ function done() {
     // remove heading from initial section
     let section = gd.wrapper.querySelector('section');
     section.innerHTML = '<pre><code class="code"></code></pre>';
-    matrix = fill_initial();
+    const w = gd.settings.get_value('width');
+    const h = gd.settings.get_value('height');
+    const maxchars = gd.settings.get_value('maxchars');
+    matrix = fill_matrix(w, h, maxchars);
+    update_content();
     setInterval(update_content, 100);
 }
 
-function fill_matrix() {
-    const width = gd.settings.get_value('width');
-    const height = gd.settings.get_value('height');
+function animatrix(matrix) {
+    const w = gd.settings.get_value('width');
+    const h = gd.settings.get_value('height');
+    const maxchars = gd.settings.get_value('maxchars');
 
-    // keep matrix as is if less than section height
-    if ( matrix.length > height ) return matrix;
+    let m = matrix;
 
-    // get character last line
-    const lastline = matrix.pop();
-    // get number of chars by counting spaces and subtracting from dimensions
-    let count = lastline.length - lastline.match(/ /g).length;
+    // remove last '\n'
+    m = m.substring( 0, m.length - 1 );
+    // now remove last line
+    m = m.substr( 0, m.lastIndexOf('\n') );
+
+    // get number of chars
+    let count = char_count(m, filler);
+    let chars_needed = maxchars - count;
     // create new line with char count based on last line
-    let newline = random_line(width, ' ', chars, maxchars/height);
-    matrix.unshift(newline);
-    return matrix;
+    let newline = fill_matrix(w, 1, chars_needed);
+    m = newline + m;
+    return m;
+}
+
+function char_count(str, filler) {
+    let count = 0;
+    for ( i = 0; i < str.length; i++ ) {
+        let chr = str.charAt(i);
+        if ( !filler.includes(chr) ) count++;
+    }
+    return count;
 }
 
 function update_content() {
-    let result = '';
-    matrix = fill_matrix();
-    matrix.forEach( l => {
-        result += l + '\n';
-    });
+    matrix = animatrix(matrix);
     const code = gd.wrapper.querySelector('.code');
-    code.textContent = result;
+    code.textContent = matrix;
 }
 
-function fill_initial() {
-    const width = gd.settings.get_value('width');
-    const height = gd.settings.get_value('height');
-    let l = [];
-    for ( let i = 0; i < height; i++ ) {
-        l.push(random_line(width, ' ', chars, maxchars/height));
-    }
-    return l;
+// fill a string with rows @h of lines with length @w
+function fill_matrix(w, h, maxchars) {
+    let lines = '';
+    let l = filler.repeat(w) + '\n';
+    lines = l.repeat(h);
+    if ( maxchars < 1) return lines;
+    lines = randomize_chars(lines, chars, maxchars, filler);
+    return lines;
 }
 
-// returns a string of @w length filled with @filler character
-// and @rnd_count number of random characters from @rnd_str
-function random_line(w, filler, rnd_str, rnd_count) {
-    let result = '';
-    // rnd_array holds indexes of characters that should be randomized
-    let rnd_array = Array.from({length: rnd_count}, () => Math.floor( Math.random() * w) );
-    for ( let i = 0; i < w; i++ ) {
-        if ( rnd_array.includes(i) ) {
-            result += rnd_str.charAt(random(rnd_str.length));
-        } else result += filler;
-    }
-    return result;
+// replace @count number of random indexes in @lines
+// with random characters from @chars
+//
+// optional @filler array lets us replace a char only if it's in array
+function randomize_chars(lines, chars, count, filler) {
+    do {
+        let rnd = random(lines.length);
+        let chr = lines.charAt(rnd);
+        let new_chr = random_char(chars);
+        if ( chr === '\n' ) continue;
+        if ( filler !== undefined && chr !== filler ) continue;
+        lines = replace_char_at(lines, rnd, new_chr);
+        count -= 1;
+    } while (count > 0);
+    return lines;
+}
+
+function replace_char_at(str, i, replace) {
+    return str.substr(0, i) + replace + str.substr(i + 1);
+}
+
+// return random character from @str
+function random_char(str) {
+    return str.charAt( random(str.length) );
 }
 
 function random(min, max) {

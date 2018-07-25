@@ -4,7 +4,7 @@ Highly experimental raining code effect based on the movie The Matrix.
 ## GitHub and GitHub Pages
 GitHub is a developer focused code-hosting platform. GitHub Pages lets you host code for HTML websites at no cost. With that, you can host your own DownSlide driven website for free.
 
-# Code Rains `🅖-nav`
+# ⫴Code Rains `🅖-nav`
 
 Highly experimental implementation of the red pill
 
@@ -12,6 +12,8 @@ Highly experimental implementation of the red pill
 
 css `🅖-datalist`
 - [Dark Glow](https://gist.github.com/c6d0a4d16b627d72563b43b60a164c31)
+
+maxchars `🅖-slider="300,10,400,1"`
 
 `🅖-theme-variables`
 
@@ -49,8 +51,8 @@ translateZ `🅖-slider="0px,-500,500,1,px"`
 
 ## Dimensions `🅖-collapsible`
 
-width `🅖-slider="60em,4,4000,1,em"`
-height `🅖-slider="25em,4,2000,1,em"`
+width `🅖-slider="60em,10,200,1,em"`
+height `🅖-slider="25em,10,200,1,em"`
 padding `🅖-slider="0em,0,100em,1,em"`
 inner-space `🅖-slider="100px,0,300,1,px"`
 outer-space `🅖-slider="0px,0,300,1,px"`

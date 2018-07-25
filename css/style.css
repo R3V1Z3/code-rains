@@ -14,7 +14,7 @@
 
 :root {
   --bg: darkgreen;
-  /* --font: 'Baloo', sans-serif, serif, monospace; */
+  --font: 'Roboto Mono', sans-serif, serif, monospace;
 
   --width: 60em;
   --height: 25em;
@@ -107,6 +107,8 @@
 }
 
 html, body, #wrapper, .container {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1em;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -116,16 +118,20 @@ html, body, #wrapper, .container {
   overflow: hidden;
 }
 
-code {
-  font-size: 1em;
+.section code {
+  padding: 0;
+  font-family: var(--font);
   color: white;
+  width: var(--width);
+  height: var(--height);
 }
 
 /* Sections */
 .section {
   position: fixed;
-  width: var(--width);
-  height: var(--height);
+  font-size: 10px;
+  width: max-content;
+  height: max-content;
   padding: var(--padding);
   font-size: var(--fontsize);
   margin: auto;
@@ -187,51 +193,10 @@ iframe.bg-video {
   opacity: 0;
 }
 
-.section.old,
-.section.old.lo {
-  animation: out 0.5s ease;
-}
-
-.section.old.hi {
-  animation: in-reverse 0.5s ease;
-}
-
 .section.current,
 .section.current.hi {
   opacity: 1;
   z-index: 2;
-  animation: in 0.5s ease;
-}
-
-.section.current.lo {
-  animation: out-reverse 0.5s ease;
-}
-
-/* ANIMATIONS */
-
-/* 
-    NOTE: mix-blend-mode:normal has strange effect in current Chrome version
-    when using transforms and SVG filters
-*/
-
-@keyframes in {
-    0% { opacity: 0; mix-blend-mode: lighten; transform: translateX(100%) perspective(2000px) rotateY(60deg) scale(2); }
-    100% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
-}
-
-@keyframes out {
-    0% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
-    100% { opacity: 0; mix-blend-mode: lighten; transform: translateX(-100%) perspective(2000px) rotateY(120deg) scale(2); }
-}
-
-@keyframes in-reverse {
-  0% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
-  100% { opacity: 0; mix-blend-mode: lighten; transform: translateX(100%) perspective(2000px) rotateY(80deg) scale(2); }
-}
-
-@keyframes out-reverse {
-  0% { opacity: 0; mix-blend-mode: lighten; transform: perspective(2000px) rotateY(60deg) scale(2); }
-  100% { opacity: 1; mix-blend-mode: lighten; transform: perspective(2000px) rotateY(0deg) scale(1); }
 }
 
 /* ------------------------------------------------------------------------ */
