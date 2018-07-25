@@ -1,0 +1,268 @@
+@media print {
+  #info {
+    display: none !important;
+  }
+  #wrapper {
+    padding: 0px;
+  }
+  .ui-resizable-handle {
+    display: none !important;
+  }
+}
+
+@page { size:8.5in 11in; margin: 0.25cm }
+
+:root {
+  --bg: darkgreen;
+  /* --font: 'Baloo', sans-serif, serif, monospace; */
+
+  --width: 60em;
+  --height: 25em;
+  --fontsize: 100%;
+
+  --padding: 0em;
+
+  --inner-space: 100px;
+  --outer-space: 0px;
+
+  --vignette-blend: normal;
+
+  --brightness: 1;
+  --contrast: 100%;
+  --grayscale: 0%;
+  --hue-rotate: 0deg;
+  --invert: 0%;
+  --saturate: 100%;
+  --sepia: 0%;
+  --blur: 0px;
+
+  --scale: 1.0;
+  --perspective: 1500px;
+  --rotateX: 0deg;
+  --rotateY: 0deg;
+  --rotateZ: 0deg;
+  --translateZ: 0px;
+
+  --originX: 50%;
+  --originY: 50%;
+}
+
+.inner {
+  transform:
+    scale(var(--scale))
+    perspective(var(--perspective))
+    rotateX(var(--rotateX))
+    rotateY(var(--rotateY))
+    rotateZ(var(--rotateZ))
+    translateZ(var(--translateZ));
+  transform-origin: var(--originX) var(--originY);
+  transform-style: preserve-3d;
+  position: fixed;
+}
+
+.gd-default .inner {
+  height: 2160px;
+  width: 3840px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.fx {
+  width: 2160px;
+  height: 3840px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  filter:
+    brightness(var(--brightness))
+    contrast(var(--contrast))
+    grayscale(var(--grayscale))
+    hue-rotate(var(--hue-rotate))
+    invert(var(--invert))
+    saturate(var(--saturate))
+    sepia(var(--sepia))
+    blur(var(--blur));
+}
+
+.vignette-layer {
+  mix-blend-mode: var(--vignette-blend);
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  line-height: 120%;
+}
+
+html, body, #wrapper, .container {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+code {
+  font-size: 1em;
+  color: white;
+}
+
+/* Sections */
+.section {
+  position: fixed;
+  width: var(--width);
+  height: var(--height);
+  padding: var(--padding);
+  font-size: var(--fontsize);
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  background: none;
+  border: none;
+  box-shadow: none;
+  z-index: 1;
+}
+
+.section .content {
+  display: block;
+  margin: auto;
+  position: relative;
+  color: rgba(0,0,0,0.5);
+  opacity: 1;
+  padding-top: 6px;
+}
+
+.section a {
+  color: #4F6580;
+  text-decoration: none;
+}
+
+.section ul, .section ol {
+  margin: 0 1em;
+}
+
+iframe.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.section a.handle {
+  pointer-events: none;
+  color: #fff;
+}
+
+.section a:hover {
+  background: rgba(255,255,100,0.25);
+  box-shadow: 0 0 6px rgba(255,255,100,0.25);
+}
+
+.section p {
+  margin-bottom: 0.5em;
+}
+
+/* Slide related styles and animations */
+
+.section {
+  opacity: 0;
+}
+
+.section.old,
+.section.old.lo {
+  animation: out 0.5s ease;
+}
+
+.section.old.hi {
+  animation: in-reverse 0.5s ease;
+}
+
+.section.current,
+.section.current.hi {
+  opacity: 1;
+  z-index: 2;
+  animation: in 0.5s ease;
+}
+
+.section.current.lo {
+  animation: out-reverse 0.5s ease;
+}
+
+/* ANIMATIONS */
+
+/* 
+    NOTE: mix-blend-mode:normal has strange effect in current Chrome version
+    when using transforms and SVG filters
+*/
+
+@keyframes in {
+    0% { opacity: 0; mix-blend-mode: lighten; transform: translateX(100%) perspective(2000px) rotateY(60deg) scale(2); }
+    100% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
+}
+
+@keyframes out {
+    0% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
+    100% { opacity: 0; mix-blend-mode: lighten; transform: translateX(-100%) perspective(2000px) rotateY(120deg) scale(2); }
+}
+
+@keyframes in-reverse {
+  0% { opacity: 1; mix-blend-mode: lighten; transform: translateX(0px) perspective(2000px) rotateY(0deg) scale(1); }
+  100% { opacity: 0; mix-blend-mode: lighten; transform: translateX(100%) perspective(2000px) rotateY(80deg) scale(2); }
+}
+
+@keyframes out-reverse {
+  0% { opacity: 0; mix-blend-mode: lighten; transform: perspective(2000px) rotateY(60deg) scale(2); }
+  100% { opacity: 1; mix-blend-mode: lighten; transform: perspective(2000px) rotateY(0deg) scale(1); }
+}
+
+/* ------------------------------------------------------------------------ */
+
+/* Info panel */
+.nav a {
+  color: #76869C;
+}
+
+.nav .toc a.current {
+  color: gray;
+  pointer-events: none;
+}
+
+.nav .toc a.current::before {
+  content: "> ";
+}
+
+#custom .nav a:hover {
+  color: #fff;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    background: rgba(255, 255, 255, 0.2);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    /* border: solid whiteSmoke 4px; */
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
