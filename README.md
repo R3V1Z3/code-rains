@@ -7,27 +7,47 @@ This is an experimental implementation of the raining code effect from the movie
 ## Enter Here
 It works.
 
+## Works
+Oh yeah!
+
+## Weird
+So simple!
+
+## Stupid
+So?
+
 # ＣＯＤＥＲＡＩＮＳ `🅖-nav`
 
  │▌│ ▌│▌║│││█║ ▌
+
+<br>
+
+## Options `🅖-collapsible`
+
+chars `🅖-input="⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮╿⎮╽║▌"`
+filler `🅖-input=" "`
+speed `🅖-slider="50ms,10,1000,1"`
+maxchars `🅖-slider="20%,10,100,1,%"`
+trail `🅖-slider="0.35,0,1,0.015"`
+scanlines `🅖-slider="1,0,1,0.015"`
 
 ## Theme `🅖-collapsible`
 
 css `🅖-datalist`
 - [Dark Glow](https://gist.github.com/c6d0a4d16b627d72563b43b60a164c31)
 
-speed `🅖-slider="50ms,10,1000,1"`
-maxchars `🅖-slider="50%,10,100,1,%"`
-trail `🅖-slider="0.35,0,1,0.015"`
-scanlines `🅖-slider="1,0,1,0.015"`
-
 `🅖-theme-variables`
 
 ## Effects `🅖-collapsible`
 
-vignette `🅖-slider="0.25,0,1,0.025"`
+vignette `🅖-slider="1,0,1,0.025"`
 
 vignette-blend `🅖-select`
+- normal
+- multiply
+- screen
+- *overlay
+- hard-light
 
 svg-filter `🅖-select`
 - *None

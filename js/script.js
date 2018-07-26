@@ -1,7 +1,5 @@
 let matrix = '';
-let filler = ' ';
 let speed_timer;
-chars = "╿⎮╽║";
 const gd = new GitDown('#wrapper', {
     title: 'Code Rains',
     content: 'README.md',
@@ -35,19 +33,34 @@ function done() {
     
     configure_sections();
 
-    const w = gd.settings.get_value('width');
-    const h = gd.settings.get_value('height');
-    const maxchars = gd.settings.get_value('maxchars');
-    matrix = fill_matrix(w, h, get_total_chars(w, h, maxchars) );
-    update_content();
+    initialize_matrix();
+    update_matrix();
     set_speed();
     center_view();
+}
+
+function initialize_matrix() {
+    const w = gd.settings.get_value('width');
+    const h = gd.settings.get_value('height');
+    const chars = gd.settings.get_value('chars');
+    const filler = get_filler();
+    const maxchars = gd.settings.get_value('maxchars');
+    let total_chars = get_total_chars(w, h, maxchars);
+    matrix = fill_matrix(w, h, chars, filler, total_chars );
+}
+
+function get_filler() {
+    let f = gd.settings.get_value('filler');
+    if ( f.length < 1 ) filler = ' ';
+    // ensure there's only one character
+    //f = f.substr(0,1);
+    return f;
 }
 
 function set_speed() {
     let value = gd.settings.get_value('speed');
     if ( speed_timer !== undefined ) clearInterval(speed_timer);
-    speed_timer = setInterval(update_content, value);
+    speed_timer = setInterval(update_matrix, value);
 }
 
 function get_total_chars(w, h, maxchars) {
@@ -65,20 +78,39 @@ function configure_sections() {
     });
 }
 
-function update_content() {
-    matrix = animatrix(matrix);
-    const code = gd.wrapper.querySelector('.code');
-    const code1 = gd.wrapper.querySelector('.code-1');
-    const code2 = gd.wrapper.querySelector('.code-2');
-    code2.textContent = code1.textContent;
-    code1.textContent = code.textContent;
-    code.textContent = matrix;
-}
-
-function animatrix(matrix) {
+function update_matrix() {
     const w = gd.settings.get_value('width');
     const h = gd.settings.get_value('height');
+    const chars = gd.settings.get_value('chars');
+    const filler = get_filler();
     const maxchars = gd.settings.get_value('maxchars');
+    matrix = animatrix(matrix, w, h, chars, filler, maxchars);
+    update_sections(matrix);
+}
+
+function update_sections() {
+    let codes = gd.wrapper.querySelectorAll('section code');
+    let old_content = '';
+    codes.forEach( (c, i) => {
+        if ( old_content === '' ) {
+            old_content = c.textContent;
+            c.textContent = matrix;
+        }
+        else {
+            const m = old_content;
+            const w = gd.settings.get_value('width');
+            const h = gd.settings.get_value('height');
+            const chars = gd.settings.get_value('chars');
+            const filler = get_filler();
+            const maxchars = gd.settings.get_value('maxchars');
+            const t = get_total_chars(w, h, maxchars);
+            old_content = c.textContent;
+            c.textContent = morph_chars(m, chars, t, filler);
+        }
+    });
+}
+
+function animatrix(matrix, w, h, chars, filler, maxchars) {
     let total_chars = get_total_chars(w, h, maxchars);
     let m = matrix;
     // remove last '\n'
@@ -91,7 +123,7 @@ function animatrix(matrix) {
         let needed = total_chars - count;
         if (needed < 0) needed = 0;
         // create new line with char count based on last line
-        let newline = fill_matrix(w, 1, needed);
+        let newline = fill_matrix(w, 1, chars, filler, needed);
         m = newline + m;
     }
     // now lets morph some existing chars
@@ -121,7 +153,7 @@ function char_count(str, filler) {
 }
 
 // fill a string with rows @h of lines with length @w
-function fill_matrix(w, h, maxchars) {
+function fill_matrix(w, h, chars, filler, maxchars) {
     let lines = '';
     let l = filler.repeat(w) + '\n';
     lines = l.repeat(h);

@@ -27,7 +27,7 @@
   --inner-space: 0px;
   --outer-space: 0px;
 
-  --vignette-blend: normal;
+  --vignette-blend: overlay;
 
   --brightness: 1;
   --contrast: 100%;
@@ -145,16 +145,22 @@ html, body, #wrapper, .container {
 }
 
 .section code {
+  padding: 0;
   color: white;
   background: none;
   font-family: var(--font);
-  padding: 0;
 }
 
 .section code.code {
   text-shadow: 0px 0px 6px currentColor;
   width: var(--width);
   height: var(--height);
+}
+
+.gd-default section:nth-child(4) code {
+  font-size: 4em;
+  opacity: 0.5;
+  filter: blur(8px);
 }
 
 .section code.code-1 {
