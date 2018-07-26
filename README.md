@@ -16,7 +16,7 @@ It works.
 css `🅖-datalist`
 - [Dark Glow](https://gist.github.com/c6d0a4d16b627d72563b43b60a164c31)
 
-maxchars `🅖-slider="300,10,400,1"`
+maxchars `🅖-slider="50%,10,100,1,%"`
 trail `🅖-slider="0.35,0,1,0.015"`
 scanlines `🅖-slider="1,0,1,0.015"`
 

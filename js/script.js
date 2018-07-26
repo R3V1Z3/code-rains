@@ -1,6 +1,6 @@
 let matrix = '';
 let filler = ' ';
-chars = "╿⎮╽║";
+chars = "01";//"╿⎮╽║";
 const gd = new GitDown('#wrapper', {
     title: 'Code Rains',
     content: 'README.md',
@@ -37,10 +37,15 @@ function done() {
     const w = gd.settings.get_value('width');
     const h = gd.settings.get_value('height');
     const maxchars = gd.settings.get_value('maxchars');
-    matrix = fill_matrix(w, h, maxchars);
+    matrix = fill_matrix(w, h, get_total_chars(w, h, maxchars) );
     update_content();
-    setInterval(update_content, 20);
+    setInterval(update_content, 200);
     center_view();
+}
+
+function get_total_chars(w, h, maxchars) {
+    const t = w * h;
+    return t * (maxchars/100);
 }
 
 function configure_sections() {
@@ -67,19 +72,23 @@ function animatrix(matrix) {
     const w = gd.settings.get_value('width');
     const h = gd.settings.get_value('height');
     const maxchars = gd.settings.get_value('maxchars');
+    let total_chars = get_total_chars(w, h, maxchars);
     let m = matrix;
     // remove last '\n'
     m = m.substring( 0, m.length - 1 );
     // now remove last line
     m = m.substr( 0, m.lastIndexOf('\n') );
-    // get number of chars
-    let count = char_count(m, filler);
-    let chars_needed = maxchars - count;
-    // create new line with char count based on last line
-    let newline = fill_matrix(w, 1, chars_needed);
-    m = newline + m;
+    if ( m.split('\n').length <= h ) {
+        // get number of chars
+        let count = char_count(m, filler);
+        let needed = total_chars - count;
+        if (needed < 0) needed = 0;
+        // create new line with char count based on last line
+        let newline = fill_matrix(w, 1, needed);
+        m = newline + m;
+    }
     // now lets morph some existing chars
-    m = morph_chars(m, chars, maxchars/2, filler);
+    m = morph_chars(m, chars, total_chars/2, filler);
     return m;
 }
 
@@ -119,15 +128,14 @@ function fill_matrix(w, h, maxchars) {
 //
 // optional @filler array lets us replace a char only if it's in array
 function randomize_chars(lines, chars, count, filler) {
-    do {
+    for ( let i = 0; i < count; i++ ) {
         let rnd = random(lines.length);
         let chr = lines.charAt(rnd);
         let new_chr = random_char(chars);
         if ( chr === '\n' ) continue;
-        if ( filler !== undefined && chr !== filler ) continue;
+        // if ( filler !== undefined && chr !== filler ) continue;
         lines = replace_char_at(lines, rnd, new_chr);
-        count -= 1;
-    } while (count > 0);
+    }
     return lines;
 }
 

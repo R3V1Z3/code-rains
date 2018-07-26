@@ -158,8 +158,7 @@ html, body, #wrapper, .container {
 }
 
 .section code.code-1 {
-  width: var(--width);
-  height: var(--height);
+  opacity: 1;
 }
 
 .section code.code-2 {
