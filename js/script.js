@@ -1,6 +1,6 @@
 let matrix = '';
 let filler = ' ';
-chars = ".0OoHVXZI:UE.+.";
+chars = "╿⎮╽║";
 const gd = new GitDown('#wrapper', {
     title: 'Code Rains',
     content: 'README.md',
@@ -31,38 +31,68 @@ function done() {
     // update outer-space option to configure dimensions
     center_view();
     update_slider_value( 'outer-space', gd.settings.get_value('outer-space') );
-    center_view();
+    
+    configure_sections();
 
-    // remove heading from initial section
-    let section = gd.wrapper.querySelector('section');
-    section.innerHTML = '<pre><code class="code"></code></pre>';
     const w = gd.settings.get_value('width');
     const h = gd.settings.get_value('height');
     const maxchars = gd.settings.get_value('maxchars');
     matrix = fill_matrix(w, h, maxchars);
     update_content();
-    setInterval(update_content, 100);
+    setInterval(update_content, 20);
+    center_view();
+}
+
+function configure_sections() {
+    const sections = gd.wrapper.querySelectorAll('section');
+    sections.forEach( (section, i) => {
+        let n = '';
+        if ( i > 0 ) n = '-' + i;
+        let code = `<pre><code class="code${n}"></code></pre>`;
+        section.innerHTML = code;
+    });
+}
+
+function update_content() {
+    matrix = animatrix(matrix);
+    const code = gd.wrapper.querySelector('.code');
+    const code1 = gd.wrapper.querySelector('.code-1');
+    const code2 = gd.wrapper.querySelector('.code-2');
+    code2.textContent = code1.textContent;
+    code1.textContent = code.textContent;
+    code.textContent = matrix;
 }
 
 function animatrix(matrix) {
     const w = gd.settings.get_value('width');
     const h = gd.settings.get_value('height');
     const maxchars = gd.settings.get_value('maxchars');
-
     let m = matrix;
-
     // remove last '\n'
     m = m.substring( 0, m.length - 1 );
     // now remove last line
     m = m.substr( 0, m.lastIndexOf('\n') );
-
     // get number of chars
     let count = char_count(m, filler);
     let chars_needed = maxchars - count;
     // create new line with char count based on last line
     let newline = fill_matrix(w, 1, chars_needed);
     m = newline + m;
+    // now lets morph some existing chars
+    m = morph_chars(m, chars, maxchars/2, filler);
     return m;
+}
+
+function morph_chars(lines, chars, count, filler) {
+    for ( let i = 0; i < count; i++ ) {
+        let rnd = random(lines.length);
+        let new_chr = random_char(chars);
+        let chr = lines.charAt(rnd);
+        if ( chr === '\n' ) continue;
+        if ( chr === filler ) continue;
+        lines = replace_char_at(lines, rnd, new_chr);
+    }
+    return lines;
 }
 
 function char_count(str, filler) {
@@ -72,12 +102,6 @@ function char_count(str, filler) {
         if ( !filler.includes(chr) ) count++;
     }
     return count;
-}
-
-function update_content() {
-    matrix = animatrix(matrix);
-    const code = gd.wrapper.querySelector('.code');
-    code.textContent = matrix;
 }
 
 // fill a string with rows @h of lines with length @w
@@ -222,7 +246,9 @@ function register_events() {
         center_view();
     });
 
+    gd.events.add('.nav .collapsible.Effects .field.slider input', 'input', center_view);
     gd.events.add('.nav .collapsible.Dimensions .field.slider input', 'input', center_view);
+    gd.events.add('.nav .field.slider.fontsize input', 'input', center_view);
     gd.events.add('.nav .field.slider input', 'input', vignette);
 
     let f = gd.wrapper.querySelector('.nav .field.select.svg-filter select');
