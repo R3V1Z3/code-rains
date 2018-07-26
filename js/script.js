@@ -1,6 +1,7 @@
 let matrix = '';
 let filler = ' ';
-chars = "01";//"╿⎮╽║";
+let speed_timer;
+chars = "╿⎮╽║";
 const gd = new GitDown('#wrapper', {
     title: 'Code Rains',
     content: 'README.md',
@@ -39,8 +40,14 @@ function done() {
     const maxchars = gd.settings.get_value('maxchars');
     matrix = fill_matrix(w, h, get_total_chars(w, h, maxchars) );
     update_content();
-    setInterval(update_content, 200);
+    set_speed();
     center_view();
+}
+
+function set_speed() {
+    let value = gd.settings.get_value('speed');
+    if ( speed_timer !== undefined ) clearInterval(speed_timer);
+    speed_timer = setInterval(update_content, value);
 }
 
 function get_total_chars(w, h, maxchars) {
@@ -258,6 +265,7 @@ function register_events() {
     gd.events.add('.nav .collapsible.Dimensions .field.slider input', 'input', center_view);
     gd.events.add('.nav .field.slider.fontsize input', 'input', center_view);
     gd.events.add('.nav .field.slider input', 'input', vignette);
+    gd.events.add('.nav .field.slider.speed input', 'input', set_speed);
 
     let f = gd.wrapper.querySelector('.nav .field.select.svg-filter select');
     f.addEventListener( 'change', svg_change );
