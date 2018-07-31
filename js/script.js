@@ -9,34 +9,38 @@ const gd = new GitDown('#wrapper', {
 
 function done() {
 
-    // load svg file to populate svg-filter list
-    let svg = document.querySelector('#svg');
-    if ( svg !== undefined ) extract_svg('filters.svg');
-
-    // wrap .inner with an fx div
-    let fx = gd.wrapper.querySelector('.fx');
-    if ( fx !== undefined ) {
-        $(gd.eid_inner).wrap('<div class="fx">');
-        $('#wrapper').append('<div class="vignette-layer"></div>');
-    }
-    
+    extract_svg('filters.svg');
+    add_fx();
     vignette();
-
-    gd.inner.setAttribute( 'data-x', gd.settings.get_value('offsetX') );
-    gd.inner.setAttribute( 'data-y', gd.settings.get_value('offsetY') );
-
-    if ( !gd.status.has('app-events-registered') ) register_events();
-
-    // update outer-space option to configure dimensions
+    update_offsets();
+    register_events();
     center_view();
     update_slider_value( 'outer-space', gd.settings.get_value('outer-space') );
-    
     configure_sections();
-
     initialize_matrix();
     update_matrix();
     set_speed();
     center_view();
+}
+
+function update_offsets() {
+    gd.inner.setAttribute( 'data-x', gd.settings.get_value('offsetX') );
+    gd.inner.setAttribute( 'data-y', gd.settings.get_value('offsetY') );
+}
+
+function add_fx() {
+    // check if fx layer already exists and return if so
+    let fx = gd.wrapper.querySelector('.fx');
+    if ( fx === undefined ) return;
+    const fx_div = document.createElement('div');
+    fx_div.classList.add('fx');
+    const eid_inner = document.querySelector(gd.eid_inner);
+    eid_inner.parentNode.insertBefore(fx_div, eid_inner);
+    fx_div.appendChild(eid_inner);
+    // add vignette layer
+    const vignette = document.createElement('div');
+    vignette.classList.add('vignette-layer');
+    gd.wrapper.appendChild(vignette);
 }
 
 function initialize_matrix() {
@@ -105,7 +109,7 @@ function update_sections() {
             const maxchars = gd.settings.get_value('maxchars');
             const t = get_total_chars(w, h, maxchars);
             old_content = c.textContent;
-            c.textContent = morph_chars(m, chars, t, filler);
+            c.textContent = morph_chars(m, chars, t*2, filler);
         }
     });
 }
@@ -206,30 +210,54 @@ function vignette() {
 }
 
 function extract_svg(filename) {
+    let svg = document.querySelector('#svg');
+    if ( svg === undefined ) return;
     let svg_filter = gd.settings.get_param_value('svg-filter');
     if ( svg_filter === undefined ) svg_filter = 'none';
-    $.get( filename, function(data) {
+    gd.get(filename).then( data => {
         // add svg filters to body
         var div = document.createElement("div");
         div.id = 'svg';
-        div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
+        div.innerHTML = data;
         document.body.insertBefore(div, document.body.childNodes[0]);
 
-        var $select = $('.nav .field.select.svg-filter select');
-        if ( $select.length > 0 ) {
-            // $select exists, so lets add the imported filters
-            $('#svg defs filter').each(function() {
-                var id = $(this).attr('id');
-                var name = $(this).attr('inkscape:label');
-                $select.append(`<option>${name}-${id}</option>`);
+        let select = gd.wrapper.querySelector('.nav .select.svg-filter select');
+        if ( select !== null ) {
+            let filters = document.querySelectorAll('#svg defs filter');
+            filters.forEach( i => {
+                var id = i.getAttribute('id');
+                var name = i.getAttribute('inkscape:label');
+                select.innerHTML += `<option>${name}-${id}</option>`;
             });
         }
-
-        // we'll update svg-filter url parameter now that svg is loaded
-        var $select = $('.nav .select.svg-filter select');
-        $select.val(svg_filter);
-        $select.change();
+        select.value = svg_filter;
+        gd.update_field(select, svg_filter);
+        svg_change();
+    }).catch(function (error) {
+        gd.log(error);
     });
+}
+
+function svg_change() {
+    let svg = gd.settings.get_value('svg-filter');
+    let fx = document.querySelector('.fx');
+    if ( fx === null ) return;
+
+    let style = `
+        brightness(var(--brightness))
+        contrast(var(--contrast))
+        grayscale(var(--grayscale))
+        hue-rotate(var(--hue-rotate))
+        invert(var(--invert))
+        saturate(var(--saturate))
+        sepia(var(--sepia))
+        blur(var(--blur))
+    `;
+    let url = '';
+    svg = svg.split('-');
+    if ( svg.length > 1 ) url = ` url(#${svg[1].trim()})`;
+    style += url;
+    fx.style.filter = style;
 }
 
 function update_slider_value( name, value ) {
@@ -287,7 +315,8 @@ function center_view() {
 
 function register_events() {
 
-    gd.status.add('app-events-registered');
+    if ( gd.status.has('app-events-registered') ) return;
+    else gd.status.add('app-events-registered');
 
     window.addEventListener('resize', function(event){
         center_view();
@@ -301,36 +330,15 @@ function register_events() {
 
     let f = gd.wrapper.querySelector('.nav .field.select.svg-filter select');
     f.addEventListener( 'change', svg_change );
-    function svg_change(e) {
-        let fx = document.querySelector('.fx');
-        if ( fx === null ) return;
-
-        let style = `
-            brightness(var(--brightness))
-            contrast(var(--contrast))
-            grayscale(var(--grayscale))
-            hue-rotate(var(--hue-rotate))
-            invert(var(--invert))
-            saturate(var(--saturate))
-            sepia(var(--sepia))
-            blur(var(--blur))
-        `;
-
-        let svg = e.target.value;
-        let url = '';
-        svg = svg.split('-');
-        if ( svg.length > 1 ) url = ` url(#${svg[1].trim()})`;
-        style += url;
-        fx.style.filter = style;
-    }
 
     // mousewheel zoom handler
-    $('.inner').on('wheel', function(e){
+    gd.events.add('.inner', 'wheel', mousewheel);
+    function mousewheel(e) {
         // disallow zoom within parchment content so user can safely scroll text
         let translatez = document.querySelector('.nav .slider.translateZ input');
         if ( translatez === null ) return;
         var v = Number( translatez.value );
-        if( e.originalEvent.deltaY < 0 ) {
+        if( e.deltaY < 0 ) {
             v += 10;
             if ( v > 500 ) v = 500;
         } else{
@@ -339,7 +347,7 @@ function register_events() {
         }
         gd.settings.set_value('translateZ', v);
         update_slider_value( 'translateZ', v );
-    });
+    }
 
     interact(gd.eid_inner)
     .gesturable({

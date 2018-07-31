@@ -27,7 +27,7 @@ So?
 chars `🅖-input="⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮╿⎮╽║▌"`
 filler `🅖-input=" "`
 speed `🅖-slider="50ms,10,1000,1"`
-maxchars `🅖-slider="20%,10,100,1,%"`
+maxchars `🅖-slider="10%,1,100,1,%"`
 trail `🅖-slider="0.35,0,1,0.015"`
 scanlines `🅖-slider="1,0,1,0.015"`
 
