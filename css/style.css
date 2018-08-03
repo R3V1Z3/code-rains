@@ -17,6 +17,7 @@
   --font: 'Roboto Mono', sans-serif, serif, monospace;
   --trail: 0.35;
   --scanlines: 1;
+  --layer-blend: normal;
 
   --width: 100em;
   --height: 25em;
@@ -157,7 +158,11 @@ html, body, #wrapper, .container {
   height: var(--height);
 }
 
-.gd-default section:nth-child(4) code {
+.gd-default section:nth-child(6) code {
+  opacity: 0.25;
+}
+
+.gd-default section:nth-child(7) code {
   font-size: 4em;
   opacity: 0.5;
   filter: blur(8px);
@@ -190,6 +195,7 @@ html, body, #wrapper, .container {
   border: none;
   box-shadow: none;
   z-index: 1;
+  /* mix-blend-mode: var(--layer-blend); */
 }
 
 .section .content {
