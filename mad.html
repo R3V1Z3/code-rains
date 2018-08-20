@@ -25,11 +25,11 @@
             title: 'Code Rains',
             content: 'README.md',
             merge_gists: false,
-            callback: ready
+            callback: loaded
         });
 
-        function ready() {
-            coderains.let_it_rain();
+        function loaded() {
+            coderains.ready();
             console.log('Ready.');
         }
     </script>
