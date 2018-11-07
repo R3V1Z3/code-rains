@@ -63,7 +63,7 @@
   position: fixed;
 }
 
-.gd-default .inner {
+.bd-default .inner {
   height: 2160px;
   width: 3840px;
   background: var(--bg);
@@ -103,7 +103,7 @@
   background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
 }
 
-.gd-default .inner::after {
+.bd-default .inner::after {
   content: "";
   position: fixed;
   top: 0;
@@ -158,11 +158,11 @@ html, body, #wrapper, .container {
   height: var(--height);
 }
 
-.gd-default section:nth-child(6) code {
+.bd-default section:nth-child(6) code {
   opacity: 0.25;
 }
 
-.gd-default section:nth-child(7) code {
+.bd-default section:nth-child(7) code {
   font-size: 4em;
   opacity: 0.5;
   filter: blur(8px);
@@ -258,7 +258,7 @@ iframe.bg-video {
   color: #76869C;
 }
 
-.gd-default .nav h1:first-child {
+.bd-default .nav h1:first-child {
   font-size: 1em;
 }
 

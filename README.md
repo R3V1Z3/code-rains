@@ -19,76 +19,76 @@ So?
 ## And One More
 Just one
 
-# ＣＯＤＥＲＡＩＮＳ `🅖-nav`
+# ＣＯＤＥＲＡＩＮＳ `🅑-nav`
 
  │▌│ ▌│▌║│││█║ ▌
 
 <br>
 
-## Options `🅖-collapsible`
+## Options `🅑-collapsible`
 
-chars `🅖-input="⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮╿⎮╽║▌"`
-filler `🅖-input=" "`
-speed `🅖-slider="50ms,10,1000,1"`
-maxchars `🅖-slider="10%,1,100,1,%"`
-trail `🅖-slider="0.35,0,1,0.015"`
-scanlines `🅖-slider="1,0,1,0.015"`
+chars `🅑-input="⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮⎮╿⎮╽║▌"`
+filler `🅑-input=" "`
+speed `🅑-slider="50ms,10,1000,1"`
+maxchars `🅑-slider="10%,1,100,1,%"`
+trail `🅑-slider="0.35,0,1,0.015"`
+scanlines `🅑-slider="1,0,1,0.015"`
 
-## Theme `🅖-collapsible`
+## Theme `🅑-collapsible`
 
-css `🅖-datalist`
+css `🅑-datalist`
 - [Dark Glow](https://gist.github.com/c6d0a4d16b627d72563b43b60a164c31)
 
-`🅖-theme-variables`
+`🅑-theme-variables`
 
-## Effects `🅖-collapsible`
+## Effects `🅑-collapsible`
 
-vignette `🅖-slider="1,0,1,0.025"`
+vignette `🅑-slider="1,0,1,0.025"`
 
-vignette-blend `🅖-select`
+vignette-blend `🅑-select`
 - normal
 - multiply
 - screen
 - *overlay
 - hard-light
 
-svg-filter `🅖-select`
+svg-filter `🅑-select`
 - *None
 
 ---
 
-brightness `🅖-slider="1,0,3,0.05"`
-contrast `🅖-slider="100%,0,300,1,%"`
-grayscale `🅖-slider="0%,0,100,1,%"`
-hue-rotate `🅖-slider="0deg,0,360,1,deg"`
-invert `🅖-slider="0%,0,100,1,%"`
-saturate `🅖-slider="100%,0,300,1,%"`
-sepia `🅖-slider="0%,0,100,1,%"`
-blur `🅖-slider="0px,0,20,1,px"`
+brightness `🅑-slider="1,0,3,0.05"`
+contrast `🅑-slider="100%,0,300,1,%"`
+grayscale `🅑-slider="0%,0,100,1,%"`
+hue-rotate `🅑-slider="0deg,0,360,1,deg"`
+invert `🅑-slider="0%,0,100,1,%"`
+saturate `🅑-slider="100%,0,300,1,%"`
+sepia `🅑-slider="0%,0,100,1,%"`
+blur `🅑-slider="0px,0,20,1,px"`
 
-## Perspective `🅖-collapsible`
+## Perspective `🅑-collapsible`
 
-scale `🅖-slider="1.4,1,5,0.1"`
-perspective `🅖-slider="600px,0,2000,1,px"`
-originX `🅖-slider="50%,0,100,1,%"`
-originY `🅖-slider="50%,0,100,1,%"`
-rotateX `🅖-slider="20deg,0,360,1,deg"`
-rotateY `🅖-slider="5deg,0,360,1,deg"`
-scaleZ `🅖-slider="0,1,5,0.1"`
-rotateZ `🅖-slider="0deg,0,360,1,deg"`
-translateZ `🅖-slider="0px,-500,500,1,px"`
+scale `🅑-slider="1.4,1,5,0.1"`
+perspective `🅑-slider="600px,0,2000,1,px"`
+originX `🅑-slider="50%,0,100,1,%"`
+originY `🅑-slider="50%,0,100,1,%"`
+rotateX `🅑-slider="20deg,0,360,1,deg"`
+rotateY `🅑-slider="5deg,0,360,1,deg"`
+scaleZ `🅑-slider="0,1,5,0.1"`
+rotateZ `🅑-slider="0deg,0,360,1,deg"`
+translateZ `🅑-slider="0px,-500,500,1,px"`
 
-## Dimensions `🅖-collapsible`
+## Dimensions `🅑-collapsible`
 
-width `🅖-slider="100em,10,200,1,em"`
-height `🅖-slider="25em,10,200,1,em"`
-padding `🅖-slider="0em,0,100em,1,em"`
-inner-space `🅖-slider="0px,0,300,1,px"`
-outer-space `🅖-slider="0px,0,300,1,px"`
-offsetX `🅖-slider="0px,-4000,4000,1,px"`
-offsetY `🅖-slider="0px,-4000,4000,1,px"`
+width `🅑-slider="100em,10,200,1,em"`
+height `🅑-slider="25em,10,200,1,em"`
+padding `🅑-slider="0em,0,100em,1,em"`
+inner-space `🅑-slider="0px,0,300,1,px"`
+outer-space `🅑-slider="0px,0,300,1,px"`
+offsetX `🅑-slider="0px,-4000,4000,1,px"`
+offsetY `🅑-slider="0px,-4000,4000,1,px"`
 
-## Help `🅖-group`
+## Help `🅑-group`
 
-`🅖-help`
-`🅖-hide`
+`🅑-help`
+`🅑-hide`

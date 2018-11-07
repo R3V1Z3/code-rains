@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" id="gd-code-rains" class="gd-slides gd-fullscreen gd-animated">
+<html lang="en" id="bd-code-rains" class="bd-slides bd-fullscreen bd-animated">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
 
-    <script src="//ugotsta.github.io/gitdown-madly/js/gitdown.js"></script>
-    <script src="js/script.js"></script>
-    
-    <link rel="stylesheet" type="text/css" href="//ugotsta.github.io/gitdown-madly/css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="//ugotsta.github.io/breakdown-madly/js/breakdown.js"></script>
+  <script src="js/script.js"></script>
 
-    <title>Code Rains - Mad</title>
+  <link rel="stylesheet" type="text/css" href="//ugotsta.github.io/breakdown-madly/css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <title>Code Rains - Mad</title>
 </head>
 
 <body id="custom">
-    <div id="wrapper">
-    </div>
+  <div id="wrapper">
+  </div>
 
-    <script>
-        var coderains = new CodeRains('#wrapper', {
-            title: 'Code Rains',
-            content: 'README.md',
-            merge_gists: false,
-            callback: loaded
-        });
+  <script>
+    var coderains = new CodeRains('#wrapper', {
+      title: 'Code Rains',
+      content: 'README.md',
+      merge_gists: false,
+      callback: loaded
+    });
 
-        function loaded() {
-            coderains.ready();
-            console.log('Ready.');
-        }
-    </script>
+    function loaded() {
+      coderains.ready();
+      console.log('Ready.');
+    }
+  </script>
 </body>
 
 </html>
